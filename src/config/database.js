@@ -6,20 +6,20 @@ const { Sequelize } = require('sequelize');
 
 let sequelize;
 if (process.env.DATABASE_URL) {
-  // Production on Heroku: use full DATABASE_URL with SSL
+  // Heroku production: use full URL + SSL
   sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect:  'postgres',
-    protocol: 'postgres',
-    define: {},                           // ← ensure define is never undefined
+    dialect:        'postgres',
+    protocol:       'postgres',
+    define:         {},             // ← ensure this is here
     dialectOptions: {
       ssl: {
-        require: true,
+        require:          true,
         rejectUnauthorized: false,
       },
     },
   });
 } else {
-  // Local development: pull values from .env
+  // Local development: use .env values
   sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -28,7 +28,7 @@ if (process.env.DATABASE_URL) {
       host:    process.env.DB_HOST,
       port:    process.env.DB_PORT,
       dialect: 'postgres',
-      define: {},                         // ← same here
+      define:  {},                  // ← and here too
     }
   );
 }
